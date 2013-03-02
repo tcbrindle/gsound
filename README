@@ -34,7 +34,7 @@ Prerequisites:
 Building GSound from git requires a fairly modern Gnome development environment;
 so far it's only been tested on Fedora 18. At a minimum, you'll need headers
 for GObject, GIO and libcanberra, as well as the needed machinery to generate
-GObject introspection data and Vala VAPI.
+GObject introspection data and the Vala VAPI.
 
 Differences from libcanberra:
 ----------------------------
@@ -45,12 +45,16 @@ GSound wraps the libcanberra API very closely, with the following differences:
 This is because most GI consumers have automatic conversion from native dicts or
 hashes to GHashTables.
 
-2) Callbacks use the standard GIO async pattern (i.e. call a finish() function on
+2) Errors are reported using GErrors rather than integer return values. Most
+GI consumers map GErrors to native exceptions.
+
+3) Callbacks use the standard GIO async pattern (i.e. call a finish() function on
 a GAsyncResult that's handed to a callback you supply).
 
-3) GCancellables are used for cancelling sounds in progress
+4) GCancellables are used for cancelling sounds in progress, again for
+consistency with GIO.
 
-4) What libcanberra calls "properties" are called "attributes" in GSound to avoid
+5) What libcanberra calls "properties" are called "attributes" in GSound to avoid
 confusing them with GObject properties.
 
 Examples:
