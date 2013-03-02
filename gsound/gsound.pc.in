@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+includedir=@includedir@
+
+Name: gsound
+Description: GObject wrapper for libcanberra
+Version: @VERSION@
+Requires: 
+Libs: -L${libdir} -lgsound
+Cflags: -I${includedir}

@@ -1,0 +1,34 @@
+
+Overview:
+---------
+
+libplaysound is a thin GObject wrapper around libcanberra, a C implementation of
+the XDG Sound Theme and Name specifications. Libplaysound is not designed to be
+used from C, where it would be much more convenient to use libcanberra directly.
+Instead, libplaysound is designed to be used by language bindings via
+the use of GObject Introspection.
+
+libplaysound is written in Vala, using the libcanberra Vala bindings.
+
+License:
+--------
+
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Lesser General Public License as published
+    by the Free Software Foundation, either version 2.1 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+    General Public License for more details.
+
+Prerequisites:
+--------------
+
+Building libplaysound from a distributed tarball requires GObject, GIO,
+libcanberra, and (optionally) Gtk3 development headers to be installed.
+
+Building from a Git checkout additionally requires the Vala compiler and the
+libcanberra Vala bindings to be installed.
+

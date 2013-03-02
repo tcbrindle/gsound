@@ -1,0 +1,15 @@
+// Metadata file for Vala API generation.
+// See https://live.gnome.org/Vala/UpstreamGuide for more information
+
+ATTR_* skip=false name="ATTR_(.+)" parent="GSound.Attribute"
+
+Context.play_simple skip=false throws="GLib.Error"
+Context.play_simple.error skip
+Context.play_simplev skip=false
+
+Context.play_full skip=false
+Context.play_fullv skip=false finish_name="gsound_context_play_full_finish"
+
+Context.cache skip=false throws = "GLib.Error"
+Context.cache.error skip
+Context.cachev skip=false
