@@ -57,6 +57,17 @@ consistency with GIO.
 5) What libcanberra calls "properties" are called "attributes" in GSound to avoid
 confusing them with GObject properties.
 
+TODO:
+-----
+
+* Write some proper documentation (can largely be based on libcanberra)
+
+* Make vapigen optional
+
+* GTK (and/or Clutter) integration along the lines of libcanberra-gtk3.
+
+
+
 Examples:
 ---------
 
