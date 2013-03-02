@@ -2,13 +2,18 @@
 Overview:
 ---------
 
-libplaysound is a thin GObject wrapper around libcanberra, a C implementation of
-the XDG Sound Theme and Name specifications. Libplaysound is not designed to be
-used from C, where it would be much more convenient to use libcanberra directly.
-Instead, libplaysound is designed to be used by language bindings via
-the use of GObject Introspection.
+GSound is a thin GObject wrapper around libcanberra, a C implementation of
+the XDG Sound Theme and Name specifications. It is intended to be used via
+GObject introspection in languages such as Python and JavaScript.
 
-libplaysound is written in Vala, using the libcanberra Vala bindings.
+It also comes with Vala bindings; whether these are nicer to use than the
+Vala bindings shipped with libcanberra itself is a matter of personal taste.
+Personally I prefer try/catch to checking integer return values, but other
+people's opinions may differ.
+
+Of course, GSound can be used from C as well, but in this case it doesn't
+really offer any advantages over using libcanberra directly, other than
+some extra typing.
 
 License:
 --------
@@ -26,9 +31,48 @@ License:
 Prerequisites:
 --------------
 
-Building libplaysound from a distributed tarball requires GObject, GIO,
-libcanberra, and (optionally) Gtk3 development headers to be installed.
+Building GSound from git requires a fairly modern Gnome development environment;
+so far it's only been tested on Fedora 18. At a minimum, you'll need headers
+for GObject, GIO and libcanberra, as well as the needed machinery to generate
+GObject introspection data and Vala VAPI.
 
-Building from a Git checkout additionally requires the Vala compiler and the
-libcanberra Vala bindings to be installed.
+Differences from libcanberra:
+----------------------------
+
+GSound wraps the libcanberra API very closely, with the following differences:
+
+1) Attribute/value pairs are passed using GHashTables instead of ca_proplists.
+This is because most GI consumers have automatic conversion from native dicts or
+hashes to GHashTables.
+
+2) Callbacks use the standard GIO async pattern (i.e. call a finish() function on
+a GAsyncResult that's handed to a callback you supply).
+
+3) GCancellables are used for cancelling sounds in progress
+
+4) What libcanberra calls "properties" are called "attributes" in GSound to avoid
+confusing them with GObject properties.
+
+Examples:
+---------
+
+A couple of very short examples can be found in the tests/ directory.
+TODO: write some real tests, and some real examples.
+
+In GJS, the simplest possible example would be something like
+
+const GSound = imports.gi.GSound;
+
+let ctx = new GSound.Context();
+
+try {
+    ctx.init(); // GJS doesn't support GInitable directly
+    ctx.play_simple(null, // no cancellable
+                    "media.filename", "/an/example/file.ogg");
+} catch (e) {
+    // Handle error
+}
+
+
+
 
