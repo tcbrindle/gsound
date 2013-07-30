@@ -29,7 +29,6 @@ G_DEFINE_TYPE_WITH_CODE(GSoundContext, gsound_context, G_TYPE_OBJECT,
 struct _GSoundContextPrivate
 {
     ca_context *ca;
-    GApplication *app;
 };
 
 GQuark
