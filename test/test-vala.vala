@@ -11,9 +11,10 @@ class TestApp : GLib.Application, GLib.Initable
     public TestApp() throws GLib.Error
     {
         Object(application_id: "net.tristanb.GSoundTest");
+        init();
     }
 
-    private bool init(Cancellable? cancellable) throws Error
+    private bool init(Cancellable? cancellable = null) throws Error
     {
         ctx = new GSound.Context(cancellable);
 
@@ -39,7 +40,6 @@ void main(string[] args)
 {
     try {
         var app = new TestApp();
-        app.init();
         app.run(args);
     } catch (GLib.Error e) {
         critical("Caught error: %s", e.message);

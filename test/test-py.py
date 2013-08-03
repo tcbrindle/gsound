@@ -20,11 +20,11 @@ def cancel_playing():
 try:
     ctx = GSound.Context()
     ctx.init(None)
-    ctx.cache({ GSound.PROP_MEDIA_FILENAME : "/usr/share/sounds/alsa/Front_Left.wav" });
-    ctx.play_simple({ GSound.PROP_MEDIA_FILENAME : "/usr/share/sounds/alsa/Front_Left.wav" },
+    #ctx.cache({ GSound.ATTR_MEDIA_FILENAME : "/usr/share/sounds/alsa/Front_Left.wav" });
+    ctx.play_simple({ GSound.ATTR_MEDIA_FILENAME : "/usr/share/sounds/alsa/Front_Left.wav" },
                     cancellable)
     
-    ctx.play_full({ GSound.PROP_MEDIA_FILENAME : "/usr/share/sounds/alsa/Front_Center.wav" },
+    ctx.play_full({ GSound.ATTR_MEDIA_FILENAME : "/usr/share/sounds/alsa/Front_Center.wav" },
                   cancellable, on_play_full_finished, None)
     
     GLib.timeout_add_seconds(1, cancel_playing)
