@@ -100,6 +100,7 @@ on_ca_play_full_finished(ca_context *ca,
         g_task_return_new_error (task,
                                  GSOUND_ERROR,
                                  error_code,
+                                 "%s",
                                  ca_strerror(error_code));
     }
     else
