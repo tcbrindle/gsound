@@ -107,7 +107,7 @@ static void
 on_cancellable_cancelled(GCancellable *cancellable,
                          GSoundContext *self)
 {
-    ca_context_cancel(self->priv->ca, GPOINTER_TO_INT(cancellable));
+    ca_context_cancel(self->priv->ca, g_direct_hash(cancellable));
 }
 
 /**
@@ -252,7 +252,7 @@ gsound_context_play_simple (GSoundContext *self,
     va_end(args);
 
     res = ca_context_play_full(self->priv->ca,
-                               GPOINTER_TO_INT(cancellable),
+                               g_direct_hash(cancellable),
                                pl, NULL, NULL);
 
     if (cancellable)
@@ -291,7 +291,7 @@ gsound_context_play_simplev(GSoundContext *self,
     hash_table_to_prop_list (attrs, proplist);
 
     res = ca_context_play_full(self->priv->ca,
-                               GPOINTER_TO_INT(cancellable),
+                               g_direct_hash(cancellable),
                                proplist, NULL, NULL);
 
     if (cancellable)
@@ -343,7 +343,7 @@ gsound_context_play_full(GSoundContext *self,
                                                            NULL /*FIXME*/);
 
     res = ca_context_play_full(self->priv->ca,
-                               GPOINTER_TO_INT(cancellable),
+                               g_direct_hash(cancellable),
                                proplist,
                                on_ca_play_full_finished,
                                result);
@@ -402,7 +402,7 @@ gsound_context_play_fullv(GSoundContext *self,
                                                            NULL /*FIXME*/);
 
     res = ca_context_play_full(self->priv->ca,
-                               GPOINTER_TO_INT(cancellable),
+                               g_direct_hash(cancellable),
                                proplist,
                                on_ca_play_full_finished,
                                result);
