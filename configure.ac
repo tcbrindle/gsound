@@ -15,9 +15,11 @@ AM_PROG_VALAC
 
 LT_INIT
 
+GOBJECT_REQUIRED=2.36.0
+
 PKG_CHECK_MODULES(GSOUND,
 [
-    gobject-2.0
+    gobject-2.0 >= $GOBJECT_REQUIRED
     gio-2.0
     libcanberra
 ])
