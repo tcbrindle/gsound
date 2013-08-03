@@ -24,7 +24,7 @@ static void gsound_context_initable_init(GInitableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE(GSoundContext, gsound_context, G_TYPE_OBJECT,
                         G_IMPLEMENT_INTERFACE(G_TYPE_INITABLE,
-                                              gsound_context_initable_init));
+                                              gsound_context_initable_init))
 
 struct _GSoundContextPrivate
 {
@@ -67,15 +67,19 @@ var_args_to_prop_list(va_list args, ca_proplist *pl)
 {
     while (TRUE)
     {
-        const char *key = va_arg(args, const char*);
+        const char *key;
+        const char *val;
+        int res;
+
+        key = va_arg(args, const char*);
         if (!key)
             return CA_SUCCESS;
 
-        const char *val = va_arg(args, const char*);
+        val = va_arg(args, const char*);
         if (!val)
             return CA_ERROR_INVALID;
 
-        int res = ca_proplist_sets(pl, key, val);
+        res = ca_proplist_sets(pl, key, val);
         if (res != CA_SUCCESS)
             return res;
     }
@@ -210,10 +214,11 @@ gsound_context_change_attrsv (GSoundContext *self,
                               GError **error)
 {
     ca_proplist *pl;
+    int res;
     
     g_return_val_if_fail(GSOUND_IS_CONTEXT(self), FALSE);
 
-    int res = ca_proplist_create(&pl);
+    res = ca_proplist_create(&pl);
     if (!test_return (res, error))
         return FALSE;
     
@@ -327,24 +332,22 @@ gsound_context_play_full(GSoundContext *self,
     GError *inner_error = NULL;
     ca_proplist *proplist;
     va_list args;
-    int res = ca_proplist_create(&proplist);
+    GTask *task;
+    int res;
+
+    task = g_task_new(self, cancellable, callback, user_data);
+
+    res = ca_proplist_create(&proplist);
     if (!test_return (res, &inner_error))
     {
-        g_task_report_error (G_OBJECT(self),
-                             callback,
-                             user_data,
-                             gsound_context_play_full,
-                             inner_error);
+        g_task_return_error (task, inner_error);
+        g_object_unref(task);
+        return;
     }
 
     va_start(args, user_data);
     var_args_to_prop_list (args, proplist);
     va_end(args);
-
-    GTask *task = g_task_new(G_OBJECT(self),
-                             cancellable,
-                             callback,
-                             user_data);
 
     res = ca_context_play_full(self->priv->ca,
                                g_direct_hash(cancellable),
@@ -386,22 +389,20 @@ gsound_context_play_fullv(GSoundContext *self,
 {
     GError *inner_error = NULL;
     ca_proplist *proplist;
-    int res = ca_proplist_create(&proplist);
+    GTask *task;
+    int res;
+
+    task = g_task_new(self, cancellable, callback, user_data);
+    
+    res = ca_proplist_create(&proplist);
     if (!test_return (res, &inner_error))
     {
-        g_task_report_error (G_OBJECT(self),
-                             callback,
-                             user_data,
-                             gsound_context_play_fullv,
-                             inner_error);
+        g_task_return_error (task, inner_error);
+        g_object_unref(task);
+        return;
     }
     
     hash_table_to_prop_list (attrs, proplist);
-
-    GTask *task = g_task_new(G_OBJECT(self),
-                             cancellable,
-                             callback,
-                             user_data);
 
     res = ca_context_play_full(self->priv->ca,
                                g_direct_hash(cancellable),
@@ -509,17 +510,18 @@ static gboolean
 gsound_context_real_init(GInitable *initable, GCancellable *cancellable, GError **error)
 {
     GSoundContext *self = GSOUND_CONTEXT(initable);
+    int success;
+    ca_proplist *pl;
 
     if (self->priv->ca)
         return TRUE;
 
-    int success = ca_context_create(&self->priv->ca);
+    success = ca_context_create(&self->priv->ca);
     
     if (!test_return(success, error))
         return FALSE;
 
     /* Set a couple of attributes here if we can */
-    ca_proplist *pl;
     ca_proplist_create(&pl);
 
     ca_proplist_sets(pl, CA_PROP_APPLICATION_NAME, g_get_application_name());
