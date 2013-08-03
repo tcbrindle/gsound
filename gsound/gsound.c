@@ -89,18 +89,21 @@ on_ca_play_full_finished(ca_context *ca,
                          int error_code,
                          gpointer user_data)
 {
-    GSimpleAsyncResult *result = user_data;
+    GTask *task = user_data;
 
     if (error_code != CA_SUCCESS)
     {
-        g_simple_async_result_set_error(result,
-                                        GSOUND_ERROR,
-                                        error_code,
-                                        ca_strerror(error_code));
+        g_task_return_new_error (task,
+                                 GSOUND_ERROR,
+                                 error_code,
+                                 ca_strerror(error_code));
+    }
+    else
+    {
+        g_task_return_boolean (task, TRUE);
     }
 
-    g_simple_async_result_complete_in_idle (result);
-    g_object_unref(result);
+    g_object_unref(task);
 }
 
 static void
@@ -327,26 +330,27 @@ gsound_context_play_full(GSoundContext *self,
     int res = ca_proplist_create(&proplist);
     if (!test_return (res, &inner_error))
     {
-        g_simple_async_report_take_gerror_in_idle (G_OBJECT(self),
-                                                   callback,
-                                                   user_data,
-                                                   inner_error);
+        g_task_report_error (G_OBJECT(self),
+                             callback,
+                             user_data,
+                             gsound_context_play_full,
+                             inner_error);
     }
 
     va_start(args, user_data);
     var_args_to_prop_list (args, proplist);
     va_end(args);
 
-    GSimpleAsyncResult *result = g_simple_async_result_new(G_OBJECT(self),
-                                                           callback,
-                                                           user_data,
-                                                           NULL /*FIXME*/);
+    GTask *task = g_task_new(G_OBJECT(self),
+                             cancellable,
+                             callback,
+                             user_data);
 
     res = ca_context_play_full(self->priv->ca,
                                g_direct_hash(cancellable),
                                proplist,
                                on_ca_play_full_finished,
-                               result);
+                               task);
 
     if (cancellable)
         g_cancellable_connect(cancellable,
@@ -358,11 +362,8 @@ gsound_context_play_full(GSoundContext *self,
 
     if (!test_return (res, &inner_error))
     {
-        g_simple_async_report_take_gerror_in_idle (G_OBJECT(self),
-                                                   callback,
-                                                   user_data,
-                                                   inner_error);
-        g_object_unref(result);
+        g_task_return_error (task, inner_error);
+        g_object_unref(task);
     }
 }
 
@@ -388,24 +389,25 @@ gsound_context_play_fullv(GSoundContext *self,
     int res = ca_proplist_create(&proplist);
     if (!test_return (res, &inner_error))
     {
-        g_simple_async_report_take_gerror_in_idle (G_OBJECT(self),
-                                                   callback,
-                                                   user_data,
-                                                   inner_error);
+        g_task_report_error (G_OBJECT(self),
+                             callback,
+                             user_data,
+                             gsound_context_play_fullv,
+                             inner_error);
     }
     
     hash_table_to_prop_list (attrs, proplist);
 
-    GSimpleAsyncResult *result = g_simple_async_result_new(G_OBJECT(self),
-                                                           callback,
-                                                           user_data,
-                                                           NULL /*FIXME*/);
+    GTask *task = g_task_new(G_OBJECT(self),
+                             cancellable,
+                             callback,
+                             user_data);
 
     res = ca_context_play_full(self->priv->ca,
                                g_direct_hash(cancellable),
                                proplist,
                                on_ca_play_full_finished,
-                               result);
+                               task);
 
     if (cancellable)
         g_cancellable_connect(cancellable,
@@ -417,11 +419,8 @@ gsound_context_play_fullv(GSoundContext *self,
 
     if (!test_return (res, &inner_error))
     {
-        g_simple_async_report_take_gerror_in_idle (G_OBJECT(self),
-                                                   callback,
-                                                   user_data,
-                                                   inner_error);
-        g_object_unref(result);
+        g_task_return_error (task, inner_error);
+        g_object_unref(task);
     }
 }
 
@@ -439,10 +438,9 @@ gsound_context_play_full_finish (GSoundContext *self,
                                  GAsyncResult *result,
                                  GError **error)
 {
-    g_return_val_if_fail(GSOUND_IS_CONTEXT(self), FALSE);
-    GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT(result);
+    g_return_val_if_fail(g_task_is_valid (result, self), FALSE);
 
-    return !g_simple_async_result_propagate_error (simple, error);
+    return g_task_propagate_boolean (G_TASK(result), error);
 }
 
 /**
