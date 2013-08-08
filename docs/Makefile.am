@@ -28,7 +28,7 @@ SCANGOBJ_OPTIONS=
 
 # Extra options to supply to gtkdoc-scan.
 # e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED"
-SCAN_OPTIONS=--deprecated-guards="GSOUND_DISABLE_DEPRECATED"
+SCAN_OPTIONS=--deprecated-guards="GSOUND_DISABLE_DEPRECATED" --rebuild-types
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
@@ -101,3 +101,5 @@ DISTCLEANFILES = tmpl/gsound-unused.sgml
 # Comment this out if you want your docs-status tested during 'make check'
 #TESTS_ENVIRONMENT = cd $(srcsrc)
 #TESTS = $(GTKDOC_CHECK)
+
+-include $(top_srcdir)/git.mk

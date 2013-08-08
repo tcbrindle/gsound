@@ -34,3 +34,4 @@ test_vala_LDADD = $(test_c_LDADD)
 EXTRA_DIST = \
     test-gjs.js \
     test-py.py
+-include $(top_srcdir)/git.mk

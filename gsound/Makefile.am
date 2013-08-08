@@ -90,3 +90,5 @@ endif # HAVE_INTROSPECTION
 
 EXTRA_DIST = \
 	gsound.pc.in
+
+-include $(top_srcdir)/git.mk
