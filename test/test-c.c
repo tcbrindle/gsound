@@ -58,9 +58,7 @@ on_play_finished(GObject *obj, GAsyncResult *result, gpointer user_data)
 
     if (error)
     {
-        if (error->domain != G_IO_ERROR ||
-            error->code != G_IO_ERROR_CANCELLED)
-            check_error(error);
+        g_assert_error(error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
         g_error_free(error);
     }
     else
@@ -79,6 +77,8 @@ main(int argc, char *argv[])
     GMainLoop *main_loop;
     GThread *thread;
     GError *error = NULL;
+
+    g_set_application_name ("GSound Test");
 
     cancellable = g_cancellable_new();
     
