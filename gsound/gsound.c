@@ -31,11 +31,7 @@ struct _GSoundContextPrivate
     ca_context *ca;
 };
 
-GQuark
-gsound_error_quark (void)
-{
-    return g_quark_from_static_string ("gsound-error-quark");
-}
+G_DEFINE_QUARK(gsound-error-quark, gsound_error);
 
 static gboolean
 test_return(int code, GError **error)
