@@ -9,10 +9,10 @@ AUTOMAKE_OPTIONS = 1.6
 # of using the various options.
 
 # The name the module, e.g. 'glib'.
-DOC_MODULE=gsound
+DOC_MODULE=$(PACKAGE)
 
 # Uncomment for versioned docs and specify the version of the module, e.g. '2'.
-DOC_MODULE_VERSION=1.0
+#DOC_MODULE_VERSION=1.0
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
@@ -28,7 +28,7 @@ SCANGOBJ_OPTIONS=
 
 # Extra options to supply to gtkdoc-scan.
 # e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED"
-SCAN_OPTIONS=--deprecated-guards="GSOUND_DISABLE_DEPRECATED" --rebuild-types
+SCAN_OPTIONS=--deprecated-guards="GSOUND_DISABLE_DEPRECATED" --rebuild-types --rebuild-sections
 
 # Extra options to supply to gtkdoc-mkdb.
 # e.g. MKDB_OPTIONS=--sgml-mode --output-format=xml
@@ -89,9 +89,9 @@ include $(top_srcdir)/gtk-doc.make
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
-EXTRA_DIST += \
-	version.xml.in \
-	version-major.xml.in
+#EXTRA_DIST += \
+#	version.xml.in \
+#	version-major.xml.in
 
 # Files not to distribute
 # for --rebuild-types in $(SCAN_OPTIONS), e.g. $(DOC_MODULE).types
