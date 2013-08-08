@@ -89,6 +89,7 @@ endif # ENABLE_VAPIGEN
 endif # HAVE_INTROSPECTION
 
 EXTRA_DIST = \
-	gsound.pc.in
+	gsound.pc.in \
+	GSound-1.0.metadata
 
 -include $(top_srcdir)/git.mk
