@@ -25,25 +25,11 @@ G_BEGIN_DECLS
 #define GSOUND_TYPE_CONTEXT              (gsound_context_get_type ())
 #define GSOUND_CONTEXT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GSOUND_TYPE_CONTEXT, GSoundContext))
 #define GSOUND_CONTEXT_CLASS(obj)        (G_TYPE_CHECK_CLASS_CAST ((obj), GSOUND_TYPE_CONTEXT, GSoundContextClass))
-#define GSOUND_IS_CONTEXT(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GSOUND_TYPE_CONTEXT))
+#define GSOUND_IS_CONTEXT(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GSOUND_TYPE_CONTEXT))
 #define GSOUND_IS_CONTEXT_CLASS(obj)     (G_TYPE_CHECK_CLASS_TYPE ((obj), GSOUND_TYPE_CONTEXT))
 #define GSOUND_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GSOUND_TYPE_CONTEXT, GSoundContextClass))
 typedef struct _GSoundContext GSoundContext;
 typedef struct _GSoundContextClass GSoundContextClass;
-typedef struct _GSoundContextPrivate GSoundContextPrivate;
-
-struct _GSoundContext
-{
-    GObject parent;
-
-    /*< private > */
-    GSoundContextPrivate *priv;
-};
-
-struct _GSoundContextClass
-{
-    GObjectClass parent_class;
-};
 
 #define GSOUND_ERROR (gsound_error_quark())
 GQuark gsound_error_quark(void);

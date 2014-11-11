@@ -24,17 +24,23 @@
 
 static void gsound_context_initable_init (GInitableIface *iface);
 
-struct _GSoundContextPrivate
+struct _GSoundContext
 {
+  GObject     parent;
+
   ca_context *ca;
 };
 
+struct _GSoundContextClass
+{
+  GObjectClass parent_class;
+};
+
 G_DEFINE_TYPE_WITH_CODE (GSoundContext, gsound_context, G_TYPE_OBJECT,
-                         G_ADD_PRIVATE (GSoundContext);
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                                                 gsound_context_initable_init))
 
-G_DEFINE_QUARK (gsound-error-quark, gsound_error);
+G_DEFINE_QUARK (gsound - error - quark, gsound_error);
 
 static gboolean
 test_return (int code, GError **error)
@@ -112,7 +118,7 @@ static void
 on_cancellable_cancelled (GCancellable  *cancellable,
                           GSoundContext *self)
 {
-  ca_context_cancel (self->priv->ca, g_direct_hash (cancellable));
+  ca_context_cancel (self->ca, g_direct_hash (cancellable));
 }
 
 /**
@@ -144,7 +150,7 @@ gsound_context_open (GSoundContext *self, GError **error)
 {
   g_return_val_if_fail (GSOUND_IS_CONTEXT (self), FALSE);
 
-  return test_return (ca_context_open (self->priv->ca), error);
+  return test_return (ca_context_open (self->ca), error);
 }
 
 /**
@@ -162,7 +168,7 @@ gsound_context_set_driver (GSoundContext *self,
 {
   g_return_val_if_fail (GSOUND_IS_CONTEXT (self), FALSE);
 
-  return test_return (ca_context_set_driver (self->priv->ca, driver), error);
+  return test_return (ca_context_set_driver (self->ca, driver), error);
 }
 
 /**
@@ -191,7 +197,7 @@ gsound_context_change_attrs (GSoundContext *self,
   var_args_to_prop_list (args, pl);
   va_end (args);
 
-  res = ca_context_change_props_full (self->priv->ca, pl);
+  res = ca_context_change_props_full (self->ca, pl);
 
   ca_proplist_destroy (pl);
 
@@ -222,7 +228,7 @@ gsound_context_change_attrsv (GSoundContext *self,
 
   hash_table_to_prop_list (attrs, pl);
 
-  res = ca_context_change_props_full (self->priv->ca, pl);
+  res = ca_context_change_props_full (self->ca, pl);
 
   ca_proplist_destroy (pl);
 
@@ -257,7 +263,7 @@ gsound_context_play_simple (GSoundContext *self,
   var_args_to_prop_list (args, pl);
   va_end (args);
 
-  res = ca_context_play_full (self->priv->ca,
+  res = ca_context_play_full (self->ca,
                               g_direct_hash (cancellable),
                               pl, NULL, NULL);
 
@@ -297,7 +303,7 @@ gsound_context_play_simplev (GSoundContext *self,
 
   hash_table_to_prop_list (attrs, proplist);
 
-  res = ca_context_play_full (self->priv->ca,
+  res = ca_context_play_full (self->ca,
                               g_direct_hash (cancellable),
                               proplist, NULL, NULL);
 
@@ -348,7 +354,7 @@ gsound_context_play_full (GSoundContext      *self,
   var_args_to_prop_list (args, proplist);
   va_end (args);
 
-  res = ca_context_play_full (self->priv->ca,
+  res = ca_context_play_full (self->ca,
                               g_direct_hash (cancellable),
                               proplist,
                               on_ca_play_full_finished,
@@ -403,7 +409,7 @@ gsound_context_play_fullv (GSoundContext      *self,
 
   hash_table_to_prop_list (attrs, proplist);
 
-  res = ca_context_play_full (self->priv->ca,
+  res = ca_context_play_full (self->ca,
                               g_direct_hash (cancellable),
                               proplist,
                               on_ca_play_full_finished,
@@ -469,7 +475,7 @@ gsound_context_cache (GSoundContext *self,
   var_args_to_prop_list (args, pl);
   va_end (args);
 
-  res = ca_context_cache_full (self->priv->ca, pl);
+  res = ca_context_cache_full (self->ca, pl);
 
   ca_proplist_destroy (pl);
 
@@ -499,7 +505,7 @@ gsound_context_cachev (GSoundContext *self,
 
   hash_table_to_prop_list (attrs, proplist);
 
-  res = ca_context_cache_full (self->priv->ca, proplist);
+  res = ca_context_cache_full (self->ca, proplist);
 
   ca_proplist_destroy (proplist);
 
@@ -515,10 +521,10 @@ gsound_context_real_init (GInitable    *initable,
   int success;
   ca_proplist *pl;
 
-  if (self->priv->ca)
+  if (self->ca)
     return TRUE;
 
-  success = ca_context_create (&self->priv->ca);
+  success = ca_context_create (&self->ca);
 
   if (!test_return (success, error))
     return FALSE;
@@ -534,14 +540,14 @@ gsound_context_real_init (GInitable    *initable,
                         g_application_get_application_id (app));
     }
 
-  success = ca_context_change_props_full (self->priv->ca, pl);
+  success = ca_context_change_props_full (self->ca, pl);
 
   ca_proplist_destroy (pl);
 
   if (!test_return (success, error))
     {
-      ca_context_destroy (self->priv->ca);
-      self->priv->ca = NULL;
+      ca_context_destroy (self->ca);
+      self->ca = NULL;
     }
 
   return TRUE;
@@ -552,7 +558,7 @@ gsound_context_finalize (GObject *obj)
 {
   GSoundContext *self = GSOUND_CONTEXT (obj);
 
-  ca_context_destroy (self->priv->ca);
+  ca_context_destroy (self->ca);
 
   G_OBJECT_CLASS (gsound_context_parent_class)->finalize (obj);
 }
@@ -568,7 +574,6 @@ gsound_context_class_init (GSoundContextClass *klass)
 static void
 gsound_context_init (GSoundContext *self)
 {
-  self->priv = gsound_context_get_instance_private (self);
 }
 
 static void
