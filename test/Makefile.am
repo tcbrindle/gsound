@@ -26,7 +26,7 @@ test_vala_SOURCES = \
 
 test_vala_VALAFLAGS = \
     --vapidir=$(top_builddir)/gsound \
-    --pkg gsound-1.0 \
+    --pkg gsound \
     $(NULL)
 
 test_vala_LDADD = $(test_c_LDADD)
