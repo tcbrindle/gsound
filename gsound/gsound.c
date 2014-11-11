@@ -16,27 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "gsound.h"
 
 #include <canberra.h>
 
 #include <stdarg.h>
 
-#define GSOUND_CONTEXT_GET_PRIVATE(obj)  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GSOUND_TYPE_CONTEXT, GSoundContextPrivate))
-
 static void gsound_context_initable_init (GInitableIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (GSoundContext, gsound_context, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-                                                gsound_context_initable_init))
 
 struct _GSoundContextPrivate
 {
   ca_context *ca;
 };
 
-G_DEFINE_QUARK (gsound - error - quark, gsound_error);
+G_DEFINE_TYPE_WITH_CODE (GSoundContext, gsound_context, G_TYPE_OBJECT,
+                         G_ADD_PRIVATE (GSoundContext);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                gsound_context_initable_init))
+
+G_DEFINE_QUARK (gsound-error-quark, gsound_error);
 
 static gboolean
 test_return (int code, GError **error)
@@ -565,14 +563,12 @@ gsound_context_class_init (GSoundContextClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->finalize = gsound_context_finalize;
-
-  g_type_class_add_private (klass, sizeof (GSoundContextPrivate));
 }
 
 static void
 gsound_context_init (GSoundContext *self)
 {
-  self->priv = GSOUND_CONTEXT_GET_PRIVATE (self);
+  self->priv = gsound_context_get_instance_private (self);
 }
 
 static void
