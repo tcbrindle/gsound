@@ -1,15 +1,19 @@
-/* GSound -- GObject wrapper for libcanberra
- * 
- * Copyright 2013 Tristan Brindle
+/* gsound.h
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published
- * by the Free Software Foundation; either version 2.1 of the licence or (at
- * your option) any later version.
+ * Copyright (C) 2013 Tristan Brindle <t.c.brindle@gmail.com>
  *
- * See the included COPYING file for more information.
- * 
- * Author: Tristan Brindle <t.c.brindle at gmail dot com>
+ * This file is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of the
+ * License, or (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __GSOUND_H__
@@ -41,7 +45,6 @@ struct _GSoundContextClass
     GObjectClass parent_class;
 };
 
-
 #define GSOUND_ERROR (gsound_error_quark())
 GQuark gsound_error_quark(void);
 
@@ -66,7 +69,6 @@ typedef enum
     GSOUND_ERROR_FORKED = -17,
     GSOUND_ERROR_DISCONNECTED = -18
 } GSoundError;
-
 
 /**
  * GSOUND_ATTR_MEDIA_NAME:
@@ -482,7 +484,6 @@ typedef enum
  */
 #define GSOUND_ATTR_CANBERRA_FORCE_CHANNEL            "canberra.force_channel"
 
-
 GType gsound_context_get_type(void);
 
 GSoundContext *gsound_context_new(GCancellable *cancellable,
@@ -538,3 +539,4 @@ gboolean gsound_context_cachev(GSoundContext *context,
 
 G_END_DECLS
 #endif /* __GSOUND_H__ */
+
