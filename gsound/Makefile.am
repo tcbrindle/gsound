@@ -5,7 +5,7 @@ NULL =
 lib_LTLIBRARIES = libgsound.la
 
 libgsound_la_SOURCES = \
-	gsound-context.c gsound-context.h \
+	gsound-context.c gsound-context.h gsound-attr.h\
 	$(NULL)
 
 libgsound_la_CPPFLAGS = \
@@ -25,6 +25,8 @@ libgsound_la_LIBADD = \
 
 include_HEADERS = \
 	gsound.h \
+	gsound-attr.h \
+	gsound-context.h \
 	${NULL}
 
 pkgconfigdir = $(libdir)/pkgconfig
