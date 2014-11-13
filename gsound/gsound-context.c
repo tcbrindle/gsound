@@ -16,23 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * Section: GSoundContext
+ * SECTION: gsound-context
+ * @title: GSoundContext
  * @short_description: GSound context object
  * @see_also: #ca_context
+ * @stability: Stable
  * 
- * A #GSoundContext is used for playing system sounds. You first initialise
- * the context (using the #GInitable interface or gsound_context_new()),
- * and then call gsound_context_play_simple() (or gsound_context_play_full()) to
- * play sounds.
+ * A #GSoundContext is used for playing system sounds. The typical use pattern
+ * is:
  * 
- * ##Simple Example
+ * * Initialize the #GSoundContext
+ * * [Optional] Set any global attributes using gsound_context_change_attrs()
+ * * [Optional] Cache any frequently-used sounds (for example, sound
+ *   effects for a game) using gsound_context_cache()
+ * * Play sounds using gsound_context_play_simple() or gsound_context_play_full()
+ * * Close the connection to the sound server and clean up the context using
+ *   g_object_unref()
+ *
+ * #GSoundContext implements the #GInitable interface, so if created with
+ * g_object_new() (as typically happens with language bindings) then you must
+ * call the g_initable_init() method before attempting to use it.
+ *
+ * ## Simple Examples
+ *
+ * In C:
  * 
  * |[<!-- language="C" -->
  * GSoundContext *ctx = NULL;
- * GCancellable *cancellable;
+ * GCancellable *cancellable = g_cancellable_new();
  * GError *error = NULL;
- * 
- * cancellable = g_cancellable_new();
  * 
  * ctx = gsound_context_new(cancellable, &error);
  * if (error) {
@@ -40,12 +52,12 @@
  * }
  * 
  * gsound_context_play_simple(ctx, cancellable, &error,
- *                            GSOUND_ATTR_MEDIA_FILENAME, "/path/to/file",
+ *                            GSOUND_ATTR_EVENT_ID, "phone-incoming-call",
  *                            // other attributes...
  *                            NULL);
  * ]| 
  * 
- * or, using the Python bindings:
+ * or, using Python via GObject Introspection:
  * 
  * |[<!-- language="Python" -->
  * from gi.repository import GSound, Gio
@@ -56,7 +68,7 @@
  * try:
  *     ctx.init(cancellable);
  *     ctx.play_simple(cancellable,
- *                    { GSound.ATTR_MEDIA_FILENAME : "/path/to/file })
+ *                    { GSound.ATTR_EVENT_ID : "phone-incoming-call" })
  * except:
  *     # Handle error
  *     pass
@@ -67,29 +79,34 @@
  * |[<!-- language="Vala" -->
  * try {
  *     var ctx = new GSound.Context();
- *     ctx.play_simple(null, GSound.ATTR_MEDIA_FILENAME, "/path/to/file");
+ *     ctx.play_simple(null, GSound.Attribute.EVENT_ID, "phone-incoming-call");
  * } catch (Error e) {
  *     // handle error
  * }
+ * ]|
  * 
- * #play_simple() and play_full()
+ * ## Events
+ *
  * 
- * The above example use the gsound_context_play_simple() method for
+ *
+ * ## `play_simple()` versus `play_full()`
+ * 
+ * The above examples use the gsound_context_play_simple() method for
  * playing sounds. This is a "fire and forget" method which returns
  * immediately and does not block your program, and is suitable for most use
  * cases.
  * 
  * If you need to find out when the sound finished (for example to repeat the
- * sound) then you can use the `gsound_context_play_full()` version. This
+ * sound) then you can use the gsound_context_play_full() version. This
  * is an asynchronous method using the standard GIO async pattern, which will
  * run the supplied #GAsyncReadyCallback when the sound server has finished.
  * 
- * ##Passing Attributes
+ * ## Passing Attributes
  * 
  * GSound supplies information to the sound server by means of attributes.
  * Attributes can be set on the #GSoundContext itself using
- * gsound_context_change_attrs(), or supplied in a play() call. Attributes
- * set on the context will automatically applied to any subsequent play()
+ * gsound_context_change_attrs(), or supplied in a `play()` call. Attributes
+ * set on the context will automatically applied to any subsequent `play()`
  * calls, unless overridden by that call.
  * 
  * In C and Vala, attributes are passed as %NULL-terminated list of
@@ -97,8 +114,7 @@
  * typically passed using a language-specific associated array, for example
  * a dict in Python or an object in JavaScript.
  * 
- * 
- * 
+ * <link linkend="gsound-attr">List of attibutes supported by GSound</link>
  */
 
 #include "gsound-context.h"
