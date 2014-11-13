@@ -63,7 +63,7 @@ CLEANFILES = $(gir_DATA) $(typelib_DATA)
 if ENABLE_VAPIGEN
 include $(VAPIGEN_MAKEFILE)
 
-gsound.vapi: GSound-1.0.gir GSound-1.0.metadata gsound-1.0.deps
+gsound.vapi: GSound-1.0.gir GSound-1.0.metadata gsound.deps
 
 VAPIGEN_VAPIS = \
 	gsound.vapi
