@@ -15,6 +15,91 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+/**
+ * Section: GSoundContext
+ * @short_description: GSound context object
+ * @see_also: #ca_context
+ * 
+ * A #GSoundContext is used for playing system sounds. You first initialise
+ * the context (using the #GInitable interface or gsound_context_new()),
+ * and then call gsound_context_play_simple() (or gsound_context_play_full()) to
+ * play sounds.
+ * 
+ * ##Simple Example
+ * 
+ * |[<!-- language="C" -->
+ * GSoundContext *ctx = NULL;
+ * GCancellable *cancellable;
+ * GError *error = NULL;
+ * 
+ * cancellable = g_cancellable_new();
+ * 
+ * ctx = gsound_context_new(cancellable, &error);
+ * if (error) {
+ *     // handle error
+ * }
+ * 
+ * gsound_context_play_simple(ctx, cancellable, &error,
+ *                            GSOUND_ATTR_MEDIA_FILENAME, "/path/to/file",
+ *                            // other attributes...
+ *                            NULL);
+ * ]| 
+ * 
+ * or, using the Python bindings:
+ * 
+ * |[<!-- language="Python" -->
+ * from gi.repository import GSound, Gio
+ * 
+ * ctx = GSound.Context()
+ * cancellable = Gio.Cancellable()
+ * 
+ * try:
+ *     ctx.init(cancellable);
+ *     ctx.play_simple(cancellable,
+ *                    { GSound.ATTR_MEDIA_FILENAME : "/path/to/file })
+ * except:
+ *     # Handle error
+ *     pass
+ * ]|
+ * 
+ * or using Vala:
+ * 
+ * |[<!-- language="Vala" -->
+ * try {
+ *     var ctx = new GSound.Context();
+ *     ctx.play_simple(null, GSound.ATTR_MEDIA_FILENAME, "/path/to/file");
+ * } catch (Error e) {
+ *     // handle error
+ * }
+ * 
+ * #play_simple() and play_full()
+ * 
+ * The above example use the gsound_context_play_simple() method for
+ * playing sounds. This is a "fire and forget" method which returns
+ * immediately and does not block your program, and is suitable for most use
+ * cases.
+ * 
+ * If you need to find out when the sound finished (for example to repeat the
+ * sound) then you can use the `gsound_context_play_full()` version. This
+ * is an asynchronous method using the standard GIO async pattern, which will
+ * run the supplied #GAsyncReadyCallback when the sound server has finished.
+ * 
+ * ##Passing Attributes
+ * 
+ * GSound supplies information to the sound server by means of attributes.
+ * Attributes can be set on the #GSoundContext itself using
+ * gsound_context_change_attrs(), or supplied in a play() call. Attributes
+ * set on the context will automatically applied to any subsequent play()
+ * calls, unless overridden by that call.
+ * 
+ * In C and Vala, attributes are passed as %NULL-terminated list of
+ * (attribute, value) pairs. When using GObject introspection, attributes are
+ * typically passed using a language-specific associated array, for example
+ * a dict in Python or an object in JavaScript.
+ * 
+ * 
+ * 
+ */
 
 #include "gsound.h"
 
@@ -126,7 +211,7 @@ on_cancellable_cancelled (GCancellable  *cancellable,
  * @cancellable: (allow-none): A #GCancellable, or %NULL
  * @error: Return location for error
  *
- * Returns: (transfer full): A new #GSoundContext
+ * Returns: (transfer full): Creates and initializes a new #GSoundContext.
  */
 GSoundContext *
 gsound_context_new (GCancellable *cancellable, GError **error)
