@@ -17,7 +17,7 @@ dist-hook:
 
 gsounddocdir = ${prefix}/doc/gsound
 gsounddoc_DATA = \
-	README\
+	README.md\
 	COPYING\
 	AUTHORS\
 	ChangeLog\
