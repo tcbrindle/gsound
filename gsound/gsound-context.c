@@ -20,7 +20,6 @@
  * @title: GSoundContext
  * @short_description: GSound context object
  * @see_also: #ca_context
- * @stability: Stable
  * 
  * A #GSoundContext is used for playing system sounds. The typical use pattern
  * is:
