@@ -42,6 +42,7 @@ AC_OUTPUT([
 Makefile
 docs/Makefile
 test/Makefile
+tools/Makefile
 gsound/gsound.pc
 gsound/Makefile
 ])
