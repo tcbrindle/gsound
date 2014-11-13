@@ -2,31 +2,30 @@
 
 NULL =
 
-AM_CPPFLAGS = \
-	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" 
-
-AM_CFLAGS =\
-	 -Wall\
-	 -g
-
-INCLUDES = \
-	$(GSOUND_CFLAGS)
-
 lib_LTLIBRARIES = libgsound.la
 
 libgsound_la_SOURCES = \
-	gsound.c gsound.h \
+	gsound-context.c gsound-context.h \
 	$(NULL)
+
+libgsound_la_CPPFLAGS = \
+	${GSOUND_CFLAGS}
+	${NULL}
+
+libgsound_la_CFLAGS =\
+	-Wall\
+	-g \
+	${NULL}
 
 libgsound_la_LDFLAGS = 
 
 libgsound_la_LIBADD = \
-	$(GSOUND_LIBS)
+	$(GSOUND_LIBS) \
+	${NULL}
 
 include_HEADERS = \
-	gsound.h
+	gsound.h \
+	${NULL}
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = gsound.pc
@@ -93,3 +92,4 @@ EXTRA_DIST = \
 	GSound-1.0.metadata
 
 -include $(top_srcdir)/git.mk
+

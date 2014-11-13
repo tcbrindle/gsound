@@ -1,4 +1,4 @@
-/* gsound.c
+/* gsound-context.c
  *
  * Copyright (C) 2013 Tristan Brindle <t.c.brindle@gmail.com>
  *
@@ -101,7 +101,7 @@
  * 
  */
 
-#include "gsound.h"
+#include "gsound-context.h"
 
 #include <canberra.h>
 
