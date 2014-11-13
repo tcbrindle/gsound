@@ -470,58 +470,59 @@ typedef enum
  */
 #define GSOUND_ATTR_CANBERRA_FORCE_CHANNEL            "canberra.force_channel"
 
-GType gsound_context_get_type(void);
+GType             gsound_context_get_type          (void);
 
-GSoundContext *gsound_context_new(GCancellable *cancellable,
-                                  GError **error);
+GSoundContext    *gsound_context_new               (GCancellable  *cancellable,
+                                                    GError       **error);
 
-gboolean gsound_context_open(GSoundContext *context, GError **error);
+gboolean          gsound_context_open              (GSoundContext  *context,
+                                                    GError        **error);
 
-gboolean gsound_context_change_attrs(GSoundContext *context,
-                                     GError **error,
-                                     ...) G_GNUC_NULL_TERMINATED;
+gboolean          gsound_context_change_attrs      (GSoundContext  *context,
+                                                    GError        **error,
+                                                    ...) G_GNUC_NULL_TERMINATED;
 
-gboolean gsound_context_change_attrsv(GSoundContext *context,
-                                      GHashTable *attrs,
-                                      GError **error);
+gboolean          gsound_context_change_attrsv     (GSoundContext  *context,
+                                                    GHashTable     *attrs,
+                                                    GError        **error);
 
-gboolean gsound_context_set_driver(GSoundContext *context,
-                                   const char *driver,
-                                   GError **error);
+gboolean          gsound_context_set_driver        (GSoundContext  *context,
+                                                    const char     *driver,
+                                                    GError        **error);
 
-gboolean gsound_context_play_simple(GSoundContext *context,
-                                    GCancellable *cancellable,
-                                    GError **error,
-                                    ...) G_GNUC_NULL_TERMINATED;
+gboolean          gsound_context_play_simple       (GSoundContext  *context,
+                                                    GCancellable   *cancellable,
+                                                    GError        **error,
+                                                    ...) G_GNUC_NULL_TERMINATED;
 
-gboolean gsound_context_play_simplev(GSoundContext *context,
-                                     GHashTable *attrs,
-                                     GCancellable *cancellable,
-                                     GError **error);
+gboolean          gsound_context_play_simplev      (GSoundContext  *context,
+                                                    GHashTable     *attrs,
+                                                    GCancellable   *cancellable,
+                                                    GError        **error);
 
-void gsound_context_play_full(GSoundContext *context,
-                              GCancellable *cancellable,
-                              GAsyncReadyCallback callback,
-                              gpointer user_data,
-                              ...) G_GNUC_NULL_TERMINATED;
+void              gsound_context_play_full         (GSoundContext       *context,
+                                                    GCancellable        *cancellable,
+                                                    GAsyncReadyCallback  callback,
+                                                    gpointer             user_data,
+                                                    ...) G_GNUC_NULL_TERMINATED;
 
-void gsound_context_play_fullv(GSoundContext *context,
-                               GHashTable *attrs,
-                               GCancellable *cancellable,
-                               GAsyncReadyCallback callback,
-                               gpointer user_data);
+void              gsound_context_play_fullv        (GSoundContext       *context,
+                                                    GHashTable          *attrs,
+                                                    GCancellable        *cancellable,
+                                                    GAsyncReadyCallback  callback,
+                                                    gpointer             user_data);
 
-gboolean gsound_context_play_full_finish(GSoundContext *context,
-                                         GAsyncResult *result,
-                                         GError **error);
+gboolean          gsound_context_play_full_finish  (GSoundContext  *context,
+                                                    GAsyncResult   *result,
+                                                    GError        **error);
 
-gboolean gsound_context_cache(GSoundContext *context,
-                              GError **error,
-                              ...) G_GNUC_NULL_TERMINATED;
+gboolean          gsound_context_cache             (GSoundContext  *context,
+                                                     GError        **error,
+                                                     ...) G_GNUC_NULL_TERMINATED;
 
-gboolean gsound_context_cachev(GSoundContext *context,
-                               GHashTable *attrs,
-                               GError **error);
+gboolean          gsound_context_cachev            (GSoundContext  *context,
+                                                    GHashTable     *attrs,
+                                                    GError        **error);
 
 G_END_DECLS
 #endif /* __GSOUND_H__ */
