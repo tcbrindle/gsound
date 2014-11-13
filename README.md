@@ -16,7 +16,7 @@ from gi.repository import GSound
 try:
     ctx = GSound.Context()
     ctx.init()
-    ctx.play_simple(None, { GSound.ATTR_EVENT_ID : "phone-incoming-call" })
+    ctx.play_simple({ GSound.ATTR_EVENT_ID : "phone-incoming-call" })
 except:
     # Handle errors
     pass
