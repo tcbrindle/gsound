@@ -30,12 +30,12 @@ G_BEGIN_DECLS
 /**
  * SECTION:gsound-attr
  * @title: GSound Attributes
- * @see_also: #GSoundContext, libcanberra
+ * @short_description: Attributes recognized by GSound
+ * @see_also: #GSoundContext
  * 
  * Attributes which can be applied to a #GSoundContext or passed to one of
  * the `play()` or `cache()` methods.
  */
-
 
 /**
  * GSOUND_ATTR_MEDIA_NAME:

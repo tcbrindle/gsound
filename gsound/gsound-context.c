@@ -227,7 +227,11 @@ on_cancellable_cancelled (GCancellable  *cancellable,
  * @cancellable: (allow-none): A #GCancellable, or %NULL
  * @error: Return location for error
  *
- * Returns: (transfer full): Creates and initializes a new #GSoundContext.
+ * Creates and initializes a new #GSoundContext. If the an error occured
+ * during initialization, #NULL is returned and @error will be set
+ * appropriately.
+ *
+ * Returns: (transfer full): A new #GSoundContext
  */
 GSoundContext *
 gsound_context_new (GCancellable *cancellable, GError **error)
@@ -241,7 +245,14 @@ gsound_context_new (GCancellable *cancellable, GError **error)
 /**
  * gsound_context_open:
  * @context: A #GSoundContext
- * @error: Return location for error, or %NULL
+ * @error: Return location for error
+ *
+ * Attempts to open a connection to the backend sound driver. It is recommended
+ * that you set context attributes with gsound_context_change_attrs() before
+ * calling this function.
+ *
+ * > A connection is automatically opened before playing or caching sounds,
+ * > so you rarely need to call this yourself.
  *
  * Returns: %TRUE if the output device was opened successfully, or %FALSE
  *          (populating @error)
@@ -260,6 +271,12 @@ gsound_context_open (GSoundContext *self, GError **error)
  * @driver: libcanberra driver to use
  * @error: Return location for error, or %NULL
  *
+ * Sets the libcanberra driver to @driver, for example "pulse", "alsa" or "null".
+ * You normally do not need to set this yourself.
+ *
+ * Note that this function may return %TRUE even if the specified driver is
+ * not available: see the libcanberra documentation for details.
+ *
  * Returns: %TRUE if the libcanberra driver was set successfully
  */
 gboolean
@@ -277,6 +294,13 @@ gsound_context_set_driver (GSoundContext *self,
  * @context: A #GSoundContext
  * @error: Return location for error
  * @...: %NULL terminated list of attribute name-value pairs
+ *
+ * Set attributes or change attributes on @context. Subsequent calls to this
+ * function calling the same attributes will override the earlier values.
+ *
+ * Note that GSound will set the #GSOUND_ATTR_APPLICATION_NAME and
+ * #GSOUND_ATTR_APPLICATION_ID for you if using #GApplication, so you do
+ * not normally need to set these yourself.
  *
  * Returns: %TRUE if attributes were updated successfully
  */
@@ -306,10 +330,17 @@ gsound_context_change_attrs (GSoundContext *self,
 }
 
 /**
- * gsound_context_change_attrsv:
+ * gsound_context_change_attrsv: (rename-to gsound_context_change_attrs)
  * @context: A #GSoundContext
  * @attrs: (element-type utf8 utf8): Hash table of attributes to set
  * @error: Return location for error, or %NULL
+ *
+ * Set attributes or change attributes on @context. Subsequent calls to this
+ * function calling the same attributes will override the earlier values.
+ *
+ * Note that GSound will set the #GSOUND_ATTR_APPLICATION_NAME and
+ * #GSOUND_ATTR_APPLICATION_ID for you if using #GApplication, so you do
+ * not normally need to set these yourself.
  *
  * Returns: %TRUE if attributes were updated successfully
  */
@@ -341,7 +372,16 @@ gsound_context_change_attrsv (GSoundContext *self,
  * @context: A #GSoundContext
  * @cancellable: (allow-none): A #GCancellable, or %NULL
  * @error: Return location for error, or %NULL
- * @...: Arguments
+ * @...: A %NULL-terminated list of attribute-value pairs
+ *
+ * The basic "fire-and-forget" play command. This function will not block, and
+ * just sends a request to the sound server before immediately returning.
+ *
+ * If you need to know when a sound finishes playing then you should call
+ * gsound_context_play_full() instead.
+ *
+ * You can cancel playback at any time by calling g_cancellable_cancel() on
+ * @cancellable, if supplied. 
  *
  * Returns: %TRUE on success, or %FALSE, populating @error
  */
@@ -380,15 +420,23 @@ gsound_context_play_simple (GSoundContext *self,
 }
 
 /**
- * gsound_context_play_simplev:
+ * gsound_context_play_simplev: (rename-to gsound_context_play_simple)
  * @context: A #GSoundContext
  * @attrs: (element-type utf8 utf8): Attributes
  * @cancellable: (allow-none): A #GCancellable
  * @error: Return location for error
  *
+ * The basic "fire-and-forget" play command. This function will not block, and
+ * just sends a request to the sound server before immediately returning.
+ *
+ * If you need to know when a sound finishes playing then you should call
+ * gsound_context_play_full() instead.
+ *
+ * You can cancel playback at any time by calling g_cancellable_cancel() on
+ * @cancellable, if supplied.  
+ *
  * Returns: %TRUE on success, %FALSE on error
  *
- * Rename to: gsound_context_play_simple
  */
 gboolean
 gsound_context_play_simplev (GSoundContext *self,
@@ -425,8 +473,17 @@ gsound_context_play_simplev (GSoundContext *self,
  * @cancellable: (allow-none): A #GCancellable, or %NULL
  * @callback: (scope async): callback
  * @user_data: User data passed to @callback
- * @...: Attributes
+ * @...: A %NULL-terminated list of attribute-value pairs
  *
+ * Asynchronously request a sound to be played. When playback is finished
+ * (or if an error occurs) then @callback will be called, following the
+ * normal GIO async pattern.
+ *
+ * If playback is cancelled via @cancellable, then @callback will be called
+ * with #G_IO_ERROR_CANCELLED.
+ *
+ * If you do not need notification of when playback is complete, you should
+ * use gsound_context_play_simple().
  */
 void
 gsound_context_play_full (GSoundContext      *self,
@@ -477,14 +534,22 @@ gsound_context_play_full (GSoundContext      *self,
 }
 
 /**
- * gsound_context_play_fullv:
+ * gsound_context_play_fullv: (rename-to gsound_context_play_full)
  * @context: A #GSoundContext
  * @attrs: (element-type utf8 utf8): Attributes
  * @cancellable: (allow-none): A #GCancellable, or %NULL
  * @callback: (scope async): callback
  * @user_data: user_data
  *
- * Rename to: gsound_context_play_full
+ * Asynchronously request a sound to be played. When playback is finished
+ * (or if an error occurs) then @callback will be called, following the
+ * normal GIO async pattern.
+ *
+ * If playback is cancelled via @cancellable, then @callback will be called
+ * with #G_IO_ERROR_CANCELLED.
+ *
+ * If you do not need notification of when playback is complete, you should
+ * use gsound_context_play_simple().
  */
 void
 gsound_context_play_fullv (GSoundContext      *self,
@@ -534,9 +599,13 @@ gsound_context_play_fullv (GSoundContext      *self,
 /**
  * gsound_context_play_full_finish:
  * @context: A #GSoundContext
- * @result: Result object returned to the callback of
+ * @result: Result object passed to the callback of
  *   gsound_context_play_full()
  * @error: Return location for error
+ *
+ * Finish an async operation started by gsound_context_play_full(). You
+ * must call this function in the callback to free memory and receive any
+ * errors which occurred.
  *
  * Returns: %TRUE if playing finished successfully
  */
@@ -553,10 +622,12 @@ gsound_context_play_full_finish (GSoundContext *self,
 /**
  * gsound_context_cache: (skip)
  * @context: A #GSoundContext
- * @error: Return location for error, or %NULL
- * @...: attributes
+ * @error: Return location for error
+ * @...: A #NULL-terminated list of attribute-value pairs
  *
- * Returns: %TRUE on success, %FALSE otherwise
+ * Requests that a sound be cached on the server. See [caching][gsound-context:caching].
+ *
+ * Returns: %TRUE on success
  */
 gboolean
 gsound_context_cache (GSoundContext *self,
@@ -584,14 +655,12 @@ gsound_context_cache (GSoundContext *self,
 }
 
 /**
- * gsound_context_cachev:
+ * gsound_context_cachev: (rename-to gsound_context_cache)
  * @context: A #GSoundContext
  * @attrs: (element-type utf8 utf8): Hash table of attrerties
  * @error: Return location for error, or %NULL
  *
- * Returns: %TRUE on success
- *
- * Rename to: gsound_context_cache
+ * Requests that a sound be cached on the server. See [caching][gsound-context:caching].
  */
 gboolean
 gsound_context_cachev (GSoundContext *self,
