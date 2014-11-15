@@ -52,7 +52,7 @@ int main(string[] args)
         }
         
         gs_ctx = new GSound.Context();
-        gs_ctx.change_attrs(GSound.Attribute.APPLICATION_ID, "org.gnome.gsound-test");
+        gs_ctx.set_attributes(GSound.Attribute.APPLICATION_ID, "org.gnome.gsound-test");
         
         if (driver != null) {
             gs_ctx.set_driver(driver);

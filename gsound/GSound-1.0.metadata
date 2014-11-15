@@ -3,9 +3,9 @@
 
 ATTR_* skip=false name="ATTR_(.+)" parent="GSound.Attribute"
 
-Context.change_attrs skip=false throws="GLib.Error"
-Context.change_attrs.error skip
-Context.change_attrsv skip=false
+Context.set_attributes skip=false throws="GLib.Error"
+Context.set_attributes.error skip
+Context.set_attributesv skip=false
 
 Context.play_simple skip=false throws="GLib.Error"
 Context.play_simple.error skip

@@ -25,7 +25,7 @@
  * is:
  * 
  * * Initialize the #GSoundContext
- * * [Optional] Set any global attributes using gsound_context_change_attrs()
+ * * [Optional] Set any global attributes using gsound_context_set_attributes()
  * * [Optional] Cache any frequently-used sounds (for example, sound
  *   effects for a game) using gsound_context_cache()
  * * Play sounds using gsound_context_play_simple() or gsound_context_play_full()
@@ -104,7 +104,7 @@
  * 
  * GSound supplies information to the sound server by means of attributes.
  * Attributes can be set on the #GSoundContext itself using
- * gsound_context_change_attrs(), or supplied in a `play()` call. Attributes
+ * gsound_context_set_attributes(), or supplied in a `play()` call. Attributes
  * set on the context will automatically applied to any subsequent `play()`
  * calls, unless overridden by that call.
  * 
@@ -247,7 +247,7 @@ gsound_context_new (GCancellable *cancellable, GError **error)
  * @error: Return location for error
  *
  * Attempts to open a connection to the backend sound driver. It is recommended
- * that you set context attributes with gsound_context_change_attrs() before
+ * that you set context attributes with gsound_context_set_attributes() before
  * calling this function.
  *
  * > A connection is automatically opened before playing or caching sounds,
@@ -289,7 +289,7 @@ gsound_context_set_driver (GSoundContext *self,
 }
 
 /**
- * gsound_context_change_attrs: (skip)
+ * gsound_context_set_attributes: (skip)
  * @context: A #GSoundContext
  * @error: Return location for error
  * @...: %NULL terminated list of attribute name-value pairs
@@ -304,9 +304,9 @@ gsound_context_set_driver (GSoundContext *self,
  * Returns: %TRUE if attributes were updated successfully
  */
 gboolean
-gsound_context_change_attrs (GSoundContext *self,
-                             GError       **error,
-                             ...)
+gsound_context_set_attributes (GSoundContext *self,
+                               GError       **error,
+                               ...)
 {
   ca_proplist *pl;
   va_list args;
@@ -329,7 +329,7 @@ gsound_context_change_attrs (GSoundContext *self,
 }
 
 /**
- * gsound_context_change_attrsv: (rename-to gsound_context_change_attrs)
+ * gsound_context_set_attributesv: (rename-to gsound_context_set_attributes)
  * @context: A #GSoundContext
  * @attrs: (element-type utf8 utf8): Hash table of attributes to set
  * @error: Return location for error, or %NULL
@@ -344,9 +344,9 @@ gsound_context_change_attrs (GSoundContext *self,
  * Returns: %TRUE if attributes were updated successfully
  */
 gboolean
-gsound_context_change_attrsv (GSoundContext *self,
-                              GHashTable    *attrs,
-                              GError       **error)
+gsound_context_set_attributesv (GSoundContext *self,
+                                GHashTable    *attrs,
+                                GError       **error)
 {
   ca_proplist *pl;
   int res;

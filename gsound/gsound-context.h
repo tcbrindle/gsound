@@ -65,11 +65,11 @@ GSoundContext    *gsound_context_new               (GCancellable  *cancellable,
 gboolean          gsound_context_open              (GSoundContext  *context,
                                                     GError        **error);
 
-gboolean          gsound_context_change_attrs      (GSoundContext  *context,
+gboolean          gsound_context_set_attributes    (GSoundContext  *context,
                                                     GError        **error,
                                                     ...) G_GNUC_NULL_TERMINATED;
 
-gboolean          gsound_context_change_attrsv     (GSoundContext  *context,
+gboolean          gsound_context_set_attributesv   (GSoundContext  *context,
                                                     GHashTable     *attrs,
                                                     GError        **error);
 
