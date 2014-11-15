@@ -1,6 +1,8 @@
 
 NULL = 
 
+if ENABLE_VAPIGEN
+
 bin_PROGRAMS = gsound-play
 
 gsound_play_SOURCES = gsound-play.vala
@@ -20,5 +22,6 @@ gsound_play_LDFLAGS = \
     ${GSOUND_LIBS} \
     ${NULL}
 
+endif # ENABLE_VAPIGEN
 
 -include $(top_srcdir)/git.mk
