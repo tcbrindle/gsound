@@ -1,0 +1,28 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name xml:lang="en">GSound</name>
+  <shortdesc xml:lang="en">GObject library for playing system sounds</shortdesc>
+  <description>
+  GSound is a GObject library for playing system sounds. It is intended to be
+  used via GObject Introspection, and is a thin wrapper around the libcanberra
+  C library.
+  </description>
+  <!-- <homepage rdf:resource="https://wiki.gnome.org/Apps/CHANGE" />
+  <mailing-list rdf:resource="https://mail.gnome.org/mailman/listinfo/YOUR_MAILINGLIST" />
+  <download-page rdf:resource="https://download.gnome.org/sources/YOUR_PRODUCT/" />
+  <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=CHANGE_TO_YOUR_BUGZILLA_PRODUCT" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#deprecated" />-->
+  <programming-language>C</programming-language>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Tristan Brindle</foaf:name>
+      <gnome:userid>tbrindle</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+</Project>
