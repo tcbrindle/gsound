@@ -13,7 +13,7 @@ gsound_play_VALAFLAGS = \
     ${NULL}
 
 gsound_play_CPPFLAGS = \
-    -I${top_builddir}/gsound \
+    -I${top_srcdir}/gsound \
     ${GSOUND_CFLAGS} \
     ${NULL}
 
