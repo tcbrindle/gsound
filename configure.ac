@@ -4,7 +4,7 @@ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 AC_CONFIG_AUX_DIR(build-aux)
 AC_CONFIG_MACRO_DIR(m4)
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([-Wno-portability no-dist-gzip dist-xz])
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 
