@@ -15,23 +15,9 @@ dist-hook:
 		echo A git clone is required to generate a ChangeLog >&2; \
 	fi
 
-gsounddocdir = ${prefix}/doc/gsound
-gsounddoc_DATA = \
-	README.md\
-	COPYING\
-	AUTHORS\
-	ChangeLog\
-	INSTALL\
-	NEWS
-
-
 EXTRA_DIST = $(gsounddoc_DATA)
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-introspection --enable-gtk-doc
 
-
-# Remove doc directory on uninstall
-uninstall-local:
-	-rm -r $(gsounddocdir)
 
 -include $(top_srcdir)/git.mk
