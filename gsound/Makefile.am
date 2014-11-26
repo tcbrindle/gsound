@@ -17,7 +17,9 @@ libgsound_la_CFLAGS =\
 	-g \
 	${NULL}
 
-libgsound_la_LDFLAGS = 
+libgsound_la_LDFLAGS = \
+	-version-info $(GSOUND_LT_VERSION) \
+	$(NULL)
 
 libgsound_la_LIBADD = \
 	$(GSOUND_LIBS) \
