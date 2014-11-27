@@ -10,7 +10,9 @@
     <releaseinfo>
       for gsound 1.0.
       The latest version of this documentation can be found on-line at
-      <ulink role="online-location" url="http://tcbrindle.github.io/gsound-docs/index.html">http://tcbrindle.github.io/gsound-docs/</ulink>.
+      <ulink role="online-location" url="https://developer.gnome.org/gsound/stable/index.html">
+        https://developer.gnome.org/gsound/stable/index.html
+      </ulink>.
     </releaseinfo>
   </bookinfo>
 
