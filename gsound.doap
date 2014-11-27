@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
@@ -11,11 +12,11 @@
   used via GObject Introspection, and is a thin wrapper around the libcanberra
   C library.
   </description>
-  <!-- <homepage rdf:resource="https://wiki.gnome.org/Apps/CHANGE" />
-  <mailing-list rdf:resource="https://mail.gnome.org/mailman/listinfo/YOUR_MAILINGLIST" />
-  <download-page rdf:resource="https://download.gnome.org/sources/YOUR_PRODUCT/" />
-  <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=CHANGE_TO_YOUR_BUGZILLA_PRODUCT" />
-  <category rdf:resource="http://api.gnome.org/doap-extensions#deprecated" />-->
+  <homepage rdf:resource="https://wiki.gnome.org/Projects/GSound" />
+  <!-- <mailing-list rdf:resource="https://mail.gnome.org/mailman/listinfo/YOUR_MAILINGLIST" /> -->
+  <download-page rdf:resource="https://download.gnome.org/sources/gsound/" />
+  <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=gsound" />
+  <!-- <category rdf:resource="http://api.gnome.org/doap-extensions#deprecated" />--> -->
   <programming-language>C</programming-language>
 
   <maintainer>
