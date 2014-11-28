@@ -16,7 +16,7 @@
   <!-- <mailing-list rdf:resource="https://mail.gnome.org/mailman/listinfo/YOUR_MAILINGLIST" /> -->
   <download-page rdf:resource="https://download.gnome.org/sources/gsound/" />
   <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=gsound" />
-  <!-- <category rdf:resource="http://api.gnome.org/doap-extensions#deprecated" />--> -->
+  <!-- <category rdf:resource="http://api.gnome.org/doap-extensions#deprecated" /> -->
   <programming-language>C</programming-language>
 
   <maintainer>
