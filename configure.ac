@@ -1,5 +1,6 @@
 
-AC_INIT(gsound, 1.0.0)
+AC_INIT(gsound, 1.0.0,
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=gsound])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 AC_CONFIG_AUX_DIR(build-aux)
