@@ -385,9 +385,9 @@ G_BEGIN_DECLS
  * be cached, because they are only generated very seldomly or even
  * only once at most (such as desktop login sounds).
  *
- * If this attribute is not explicitly passed to gsound_context_play() it
- * will default to "never". If it is not explicitly passed to
- * gsound_context_cache() it will default to "permanent".
+ * If this attribute is not explicitly passed to gsound_context_play_simple() 
+ * or gsound_context_play_full() it will default to "never". If it is not
+ * explicitly passed to gsound_context_cache() it will default to "permanent".
  *
  * If the list of attributes is handed on to the sound server this
  * attribute is stripped from it.
@@ -435,7 +435,8 @@ G_BEGIN_DECLS
  * A special attribute that can be used to control whether any sounds
  * are played at all. If this attribute is "1" or unset sounds are
  * played as normal. However, if it is "0" all calls to
- * gsound_context_play() will fail with GSOUND_ERROR_DISABLED.
+ * gsound_context_play_simple() or `play_full()` will fail with
+ * GSOUND_ERROR_DISABLED.
  *
  * If the list of attributes is handed on to the sound server this
  * attribute is stripped from it.

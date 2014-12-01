@@ -36,7 +36,7 @@
  * g_object_new() (as typically happens with language bindings) then you must
  * call the g_initable_init() method before attempting to use it.
  *
- * ## Simple Examples
+ * # Simple Examples
  *
  * In C:
  * 
@@ -59,20 +59,18 @@
  * or, using Python via GObject Introspection:
  * 
  * |[<!-- language="Python" -->
- * from gi.repository import GSound, Gio
+ * from gi.repository import GSound
  * 
  * ctx = GSound.Context()
- * cancellable = Gio.Cancellable()
  * 
  * try:
- *     ctx.init(cancellable);
- *     ctx.play_simple(cancellable,
- *                    { GSound.ATTR_EVENT_ID : "phone-incoming-call" })
+ *     ctx.init();
+ *     ctx.play_simple({ GSound.ATTR_EVENT_ID : "phone-incoming-call" })
  * except:
  *     # Handle error
  *     pass
  * ]|
- * 
+ *
  * or using Vala:
  * 
  * |[<!-- language="Vala" -->
@@ -83,12 +81,8 @@
  *     // handle error
  * }
  * ]|
- * 
- * ## Events
  *
- * 
- *
- * ## `play_simple()` versus `play_full()`
+ * # `play_simple()` versus `play_full()`
  * 
  * The above examples use the gsound_context_play_simple() method for
  * playing sounds. This is a "fire and forget" method which returns
@@ -99,8 +93,18 @@
  * sound) then you can use the gsound_context_play_full() version. This
  * is an asynchronous method using the standard GIO async pattern, which will
  * run the supplied #GAsyncReadyCallback when the sound server has finished.
+ * It is guaranteed that the callback will be run exactly once.
  * 
- * ## Passing Attributes
+ * Note that calling gsound_context_play_full() with a %NULL callback is not
+ * equivalent to calling gsound_context_play_simple(). When calling 
+ * play_simple(), errors which occur before the sound is passed to the sound
+ * server are reported immediately, whereas with `play_full()` these are reported
+ * in the callback. If you pass a %NULL callback to gsound_context_play_full()
+ * you will not be able to receive these errors, so it is strongly recommended
+ * to avoid doing this and use gsound_context_play_simple() in the case when
+ * you don't need to be notified when the sound has finished.
+ * 
+ * # Passing Attributes
  * 
  * GSound supplies information to the sound server by means of attributes.
  * Attributes can be set on the #GSoundContext itself using
@@ -113,7 +117,36 @@
  * typically passed using a language-specific associated array, for example
  * a dict in Python or an object in JavaScript.
  * 
- * <link linkend="gsound-attr">List of attibutes supported by GSound</link>
+ * For the list of attributes supported by GSound, see
+ * [GSound Attributes][gsound-GSound-Attributes].
+ *
+ * # Caching # {#caching}
+ * 
+ * If supported by the sound server, frequently-used sounds may be cached. This
+ * may be useful, for example, for sound effects in a game. To cache a sound,
+ * either call gsound_context_cache(), or pass the special
+ * #GSOUND_ATTR_CANBERRA_CACHE_CONTROL attribute to one of the `play()`
+ * functions.
+ * 
+ * For example, in the startup code for a game you might include something
+ * like the following (error checking omitted):
+ * 
+ * |[ <-- language="C" -->
+ * GSoundContext *ctx = gsound_context_new (NULL, NULL);
+ * gsound_context_cache(ctx, NULL,
+ *                      GSOUND_ATTR_MEDIA_FILENAME,
+ *                      "/path/to/player-spaceship-fire-laser.ogg",
+ *                      NULL);
+ * ]|
+ * 
+ * There are three caching modes available, "permanent", "volatile" and "never".
+ * The default mode when calling gsound_context_cache() is "permanent", and
+ * the default mode for gsound_context_play_simple() and `play_full()` is
+ * "never".
+ * 
+ * See the documentation for #GSOUND_ATTR_CANBERRA_CACHE_CONTROL for more
+ * details.
+ * 
  */
 
 #include "gsound-context.h"
@@ -340,6 +373,8 @@ gsound_context_set_attributes (GSoundContext *self,
  * Note that GSound will set the #GSOUND_ATTR_APPLICATION_NAME and
  * #GSOUND_ATTR_APPLICATION_ID for you if using #GApplication, so you do
  * not normally need to set these yourself.
+ * 
+ * This function is intented to be used by language bindings.
  *
  * Returns: %TRUE if attributes were updated successfully
  */
@@ -432,7 +467,9 @@ gsound_context_play_simple (GSoundContext *self,
  * gsound_context_play_full() instead.
  *
  * You can cancel playback at any time by calling g_cancellable_cancel() on
- * @cancellable, if supplied.  
+ * @cancellable, if supplied.
+ * 
+ * This function is intented to be used by language bindings.
  *
  * Returns: %TRUE on success, %FALSE on error
  *
@@ -549,6 +586,8 @@ gsound_context_play_full (GSoundContext      *self,
  *
  * If you do not need notification of when playback is complete, you should
  * use gsound_context_play_simple().
+ * 
+ * This function is intented to be used by language bindings.
  */
 void
 gsound_context_play_fullv (GSoundContext      *self,
@@ -622,9 +661,9 @@ gsound_context_play_full_finish (GSoundContext *self,
  * gsound_context_cache: (skip)
  * @context: A #GSoundContext
  * @error: Return location for error
- * @...: A #NULL-terminated list of attribute-value pairs
+ * @...: A %NULL-terminated list of attribute-value pairs
  *
- * Requests that a sound be cached on the server. See [caching][gsound-context:caching].
+ * Requests that a sound be cached on the server. See [#caching][gsound-GSound-Context#caching].
  *
  * Returns: %TRUE on success
  */
@@ -658,8 +697,10 @@ gsound_context_cache (GSoundContext *self,
  * @context: A #GSoundContext
  * @attrs: (element-type utf8 utf8): Hash table of attrerties
  * @error: Return location for error, or %NULL
+ * 
+ * Requests that a sound be cached on the server. See [#caching][gsound-GSound-Context#caching].
  *
- * Requests that a sound be cached on the server. See [caching][gsound-context:caching].
+ * This function is intented to be used by language bindings.
  */
 gboolean
 gsound_context_cachev (GSoundContext *self,
