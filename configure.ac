@@ -54,6 +54,7 @@ VAPIGEN_CHECK($VALA_REQUIRED)
 AC_OUTPUT([
 Makefile
 docs/Makefile
+docs/version.xml
 tools/Makefile
 gsound/gsound.pc
 gsound/Makefile
