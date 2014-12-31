@@ -33,6 +33,13 @@ G_BEGIN_DECLS
 typedef struct _GSoundContext GSoundContext;
 typedef struct _GSoundContextClass GSoundContextClass;
 
+/**
+ * GSoundContext:
+ * ca: the wrapped context
+ *
+ * Wrapper for ca_context.
+ */
+
 #define GSOUND_ERROR (gsound_error_quark())
 GQuark gsound_error_quark(void);
 
