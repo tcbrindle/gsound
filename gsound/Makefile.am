@@ -70,7 +70,7 @@ gsound.vapi: GSound-1.0.gir GSound-1.0.metadata gsound.deps
 VAPIGEN_VAPIS = \
 	gsound.vapi
 
-gsound_vapi_DEPS = glib-2.0 gio-2.0 libcanberra
+gsound_vapi_DEPS = glib-2.0 gio-2.0
 gsound_vapi_METADATADIRS = $(srcdir)
 gsound_vapi_FILES = GSound-1.0.gir
 
