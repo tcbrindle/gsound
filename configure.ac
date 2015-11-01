@@ -1,5 +1,5 @@
 
-AC_INIT([gsound], [1.0.1],
+AC_INIT([gsound], [1.0.2],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=gsound],
         [gsound], [https://wiki.gnome.org/Projects/GSound])
 AX_IS_RELEASE([git-directory])
@@ -25,7 +25,7 @@ AX_COMPILER_FLAGS
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
 
-GSOUND_LT_VERSION=0:0:0
+GSOUND_LT_VERSION=0:2:0
 AC_SUBST(GSOUND_LT_VERSION)
 
 LT_INIT
