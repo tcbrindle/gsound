@@ -15,6 +15,8 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AM_PROG_VALAC
 
+AX_COMPILER_FLAGS
+
 # Before making a release, the LT_VERSION string should be modified.
 # The string is of the form C:R:A.
 # - If interfaces have been changed or added, but binary compatibility has

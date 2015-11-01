@@ -5,20 +5,20 @@ NULL =
 lib_LTLIBRARIES = libgsound.la
 
 libgsound_la_SOURCES = \
-	gsound-context.c gsound-context.h gsound-attr.h\
+	gsound-context.c gsound-context.h gsound-attr.h \
 	$(NULL)
 
 libgsound_la_CPPFLAGS = \
-	${GSOUND_CFLAGS}
+	${GSOUND_CFLAGS} \
 	${NULL}
 
 libgsound_la_CFLAGS =\
-	-Wall\
-	-g \
+	${WARN_CFLAGS} \
 	${NULL}
 
 libgsound_la_LDFLAGS = \
 	-version-info $(GSOUND_LT_VERSION) \
+	${WARN_LDFLAGS} \
 	$(NULL)
 
 libgsound_la_LIBADD = \
@@ -47,7 +47,7 @@ introspection_sources = $(libgsound_la_SOURCES)
 
 GSound-1.0.gir: libgsound.la
 GSound_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
-GSound_1_0_gir_CFLAGS = $(INCLUDES)
+GSound_1_0_gir_CFLAGS = $(INCLUDES) ${WARN_SCANNERFLAGS}
 GSound_1_0_gir_LIBS = libgsound.la
 GSound_1_0_gir_FILES = $(introspection_sources)
 GSound_1_0_gir_SCANNERFLAGS = --c-include "gsound.h"
