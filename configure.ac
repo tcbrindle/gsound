@@ -1,13 +1,15 @@
 
-AC_INIT(gsound, 1.0.1,
-        [http://bugzilla.gnome.org/enter_bug.cgi?product=gsound])
+AC_INIT([gsound], [1.0.1],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=gsound],
+        [gsound], [https://wiki.gnome.org/Projects/GSound])
+AX_IS_RELEASE([git-directory])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
-AC_CONFIG_AUX_DIR(build-aux)
-AC_CONFIG_MACRO_DIR(m4)
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wno-portability no-dist-gzip dist-xz])
 AC_CONFIG_HEADERS([config.h])
-AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 
 AC_PROG_CC
 AM_PROG_CC_C_O
