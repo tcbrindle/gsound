@@ -52,7 +52,7 @@ try {
 
 The list of supported attributes can be found in 
 [gsound-attr.h](https://developer.gnome.org/gsound/stable/gsound-GSound-Attributes.html),
-and can be used via GSound.ATTR_* string constants if the target
+and can be used via the `GSound.ATTR_*` string constants if the target
 language supports this.
 
 Playing Sounds
@@ -105,7 +105,7 @@ Usage in C
 -----------
 
 As a C library, GSound can of course be used from C and C++. If your project
-is already using  GObject libraries then you'll find the style fits right in
+is already using  GObject libraries then you'll find the style fits right in.
 Like Vala, the C API uses varargs to pass attributes to the backend, for
 example (error checking omitted for brevity):
 
